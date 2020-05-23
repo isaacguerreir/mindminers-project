@@ -1,6 +1,7 @@
-class BatchOperations {
-    constructor() {
+class ListOperations {
+    constructor(stockId) {
         this._batch = [];
+        this._stockId = stockId;
     }
 
     push(operation) {
@@ -34,6 +35,10 @@ class BatchOperations {
     get batch() {
         return this._batch;
     }
+
+    get stockId() {
+        return this._stockId;
+    }
 }
 
-export default BatchOperations;
+export default ListOperations;
