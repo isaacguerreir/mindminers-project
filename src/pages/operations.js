@@ -5,6 +5,8 @@ import Results from "../components/results";
 import Operation from "../domain/Operation";
 import ListStocks from "../domain/ListStocks";
 import IconButton from '@material-ui/core/IconButton';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -33,6 +35,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import DateFnsUtils from '@date-io/date-fns';
+
+
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -253,9 +257,10 @@ export default function OperationsPage() {
                     textAlign: `justify`,
                     textJustify: `inter-word`
                 }}>
-                    O IRCalc realiza o calculo das suas operações na bolsa dividas por mês e por ação.
-                    Adicione as operações na bolsa clicando no botão <b>Adicionar Operação</b>.
-                    Para calcular o Imposto de Renda das operações adicionadas clique no botão <b>Calcular Imposto de Renda</b> no final da lista.
+                    O IRCalc realiza o cálculo das suas operações na Bolsa dividas por mês e por ação.
+                    Adicione as operações na bolsa clicando no botão <b>ADICIONAR OPERAÇÃO</b>.
+                    Preencha os dados com cuidado, revise e por fim, aperte em <b>CALCULAR IMPOSTO DE RENDA</b>.
+                    
                 </div>
                 
                 <div style={{ 
@@ -376,6 +381,25 @@ export default function OperationsPage() {
                     </Button>
                     
                 </div>
+
+                <Card style={{
+                    marginTop: '1rem'
+                }}
+                variant="outlined">
+                    <CardContent style={{
+                        fontFamily: 'Rubik',
+                        fontSize: '0.7rem',
+                        paddingBottom: 0
+                    }}>
+                    Dicas para adicionar operações:
+                        <ul>
+                            <li>Aplique ponto (.) como separador decimal;</li>
+                            <li>Caso queira preencher novamente os dados, aperte no botão com o ícone de lápis;</li>
+                            <li>Caso queira deletar a operação adicionada, aperte no botão com o ícone de lixeira;</li>
+                            <li>Por padrão, ficarão em exibição as cinco (5) PRIMEIRAS adições de operação. Caso queira ver mais que cinco (5), aperte em "5 linhas" e escolha a quantidade de sua preferência;</li>
+                        </ul>
+                    </CardContent>
+                </Card>
                 
                 <Dialog
                     open={values.open}
