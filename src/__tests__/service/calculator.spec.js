@@ -5,8 +5,8 @@ import {
     descountAccLoss,
     calculateMeasuredResult,
     calculateIR
-} from '../service/calculator';
-import Operation from '../domain/Operation';
+} from '../../service/calculator';
+import Operation from '../../domain/Operation';
 
 describe("Using calculator", () => {
     it("calculating median prices", () => {

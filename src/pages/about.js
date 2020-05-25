@@ -21,8 +21,8 @@ const About = () => (
             textJustify: `inter-word`,
             marginTop: '2rem'
         }}>
-            O IRCalc é uma calculadora de imposto de renda sobre operações de compra e venda na bolsa de valores.
-            Com ele é possível saber divido por papel na bolsa de valores e mensalmente detalhes como a Taxa de Imposto de Renda, Total Líquido, Prejuízo Acumulado e etc.
+            A IRCalc é uma calculadora de Imposto de Renda sobre operações de compra e venda na Bolsa de Valores.
+            Com ela é possível detalhes como a Taxa de Imposto de Renda, Total Líquido, Prejuízo Total e etc.
         </div>
 
         <div style={{
@@ -32,8 +32,8 @@ const About = () => (
             textJustify: `inter-word`,
             marginTop: '2rem'
         }}>
-            O projeto foi realizado em cinco dias pelo desenvolvedor de software Isaac Guerreiro. Quaisquer dúvidas só entrar
-             em <a href="mailto:isaacguerreirocom@gmail.com">contato</a>.
+            O projeto foi realizado pelo desenvolvedor de software Isaac Guerreiro. Qualquer dúvida
+            entrar em <a href="mailto:isaacguerreirocom@gmail.com">contato</a>.
         </div>
    </Layout>
 )
