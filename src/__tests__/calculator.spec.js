@@ -43,11 +43,28 @@ describe("Using calculator", () => {
         const op3 = new Operation(new Date, 'PTR4', 'BUY', 27.87, 100.0, 8.50);
         const op4 = new Operation(new Date, 'PTR4', 'SELL', 26.53, 100.0, 8.50);
         const op5 = new Operation(new Date, 'PTR4', 'SELL', 27.39, 100.0, 8.50);
-        expect(calculateIR([op1])).toEqual([0.0]);
-        expect(calculateIR([op1, op2])).toEqual([0.0, 0.0]);
-        expect(calculateIR([op1, op2, op3])).toEqual([0.0, 0.0, 0.0]);
-        expect(calculateIR([op1, op2, op3, op4])).toEqual([0.0, 0.0, 0.0, 0.0]);
-        expect(calculateIR([op1, op2, op3, op4, op5])).toEqual([0.0, 0.0, 0.0, 0.0, 5.0625]);
-    })
 
+        const buyRes = {
+            ir: 0,
+            profit: 0,
+            loss: 0
+        }
+        expect(calculateIR([op1])).toEqual([buyRes]);
+        expect(calculateIR([op1, op2])).toEqual([buyRes, buyRes]);
+        expect(calculateIR([op1, op2, op3])).toEqual([buyRes, buyRes, buyRes]);
+        expect(calculateIR([op1, op2, op3, op4])).toEqual([buyRes, buyRes, buyRes, {
+            ir: 0,
+            profit: 0,
+            loss: 26.125
+        }]);
+        expect(calculateIR([op1, op2, op3, op4, op5])).toEqual([buyRes, buyRes, buyRes, {
+            ir: 0,
+            profit: 0,
+            loss: 26.125
+        }, {
+            ir: 5.0625,
+            profit: 59.875,
+            loss: 0.0
+        }]);
+    })
 })

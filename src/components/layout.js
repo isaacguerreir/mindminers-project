@@ -28,16 +28,26 @@ const Layout = ({ children }) => {
       <Header siteTitle={data.site.siteMetadata.title} />
       <div
         style={{
+          position: 'relative',
+          minHeight: '80vh',
           margin: `0 auto`,
           maxWidth: 960,
           padding: `0 1.0875rem 1.45rem`,
         }}
       >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
+        <main style={{
+          marginBottom: '3rem'
+        }}>
+          {children}
+        </main>
+        
+        <footer style={{
+          position: 'absolute',
+          bottom: '0',
+          width: '100%',
+          height: '2.5rem'   
+        }}>
+          © {new Date().getFullYear()}, Isaac Guerreiro
         </footer>
       </div>
     </>

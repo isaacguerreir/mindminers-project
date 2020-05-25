@@ -24,7 +24,7 @@ class ListStocks {
 
     stockListById(stockId) {
         for (let i = 0; i < this.stocks.length; i++) {
-            if (this.stocks[i].stockId == stockId) {
+            if (this.stocks[i].stockId === stockId) {
                return this.stocks[i];
             }
         }

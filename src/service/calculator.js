@@ -11,17 +11,25 @@ const calculateIR = (listOperations) => {
         let tax      = operation.tax;
         let type     = operation.type;
 
-        if (operation.type == "BUY") {
+        if (type === "BUY") {
             medianPrice = calculateMedianPrice(medianPrice, medianQuantity, price, quantity, tax);
             medianQuantity = calculateMedianQuantity(medianQuantity, quantity);
-            return 0.0;
+            return {
+                ir: 0.0,
+                profit: 0.0,
+                loss: 0.0
+            }
         }
         
         let measuredResult = calculateMeasuredResult(medianPrice, price, quantity, tax);
         
         if (measuredResult < 0) {
             accumulatedLoss += Math.abs(measuredResult);
-            return 0.0;
+            return {
+                ir: 0.0,
+                profit: 0.0,
+                loss: Math.abs(measuredResult)
+            }
         }
 
         let IRTax = measuredResult - descountAccLoss(measuredResult, accumulatedLoss);
@@ -29,7 +37,11 @@ const calculateIR = (listOperations) => {
         
         accumulatedLoss = calculateAccumulatedLoss(measuredResult, accumulatedLoss);
 
-        return IRTax;
+        return {
+            ir: IRTax,
+            profit: measuredResult,
+            loss: 0.0
+        };
     })
 
     return result;
