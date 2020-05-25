@@ -115,9 +115,21 @@ const Results = ({ listStocks }) => {
             </div>
             <div style={{
                 fontFamily: 'Rubik',
-
+                textAlign: `justify`,
+                textJustify: `inter-word`
             }}>
-                Esse é o texto que vai ficar aparecendo entre o chart e os dados detalhados
+                Clique em cada <b>tipo de Ação</b> adicionada para conferir os detalhes (Lucro Total¹, Prejuízo Total² e Total Líquido³) e o IR calculado,
+                os quais estarão dividos por mês.
+            </div>
+            <div style={{
+                fontFamily: 'Rubik',
+                fontSize: '0.6rem',
+                marginBottom: '1rem',
+                paddingLeft: '1rem'
+            }}>
+                <div>¹ <i>Lucro Total</i> é calculado pelo somatório do valor de todas as operações em que o <i>Resultado Aferido</i> é maior que 0.</div>
+                <div>² <i>Prejuízo Total</i> é calculado pelo somatório do valor de todas as operações em que o <i>Resultado Aferido</i> é menor que 0.</div>
+                <div>³ <i>Total Líquido</i> é calculado pelo <i>Lucro Total</i> menos o <i>Prejuízo Total</i> menos o <i>Imposto de Renda Total</i>.</div>
             </div>
             {
                 stockIds.map((stockId, index) => {
