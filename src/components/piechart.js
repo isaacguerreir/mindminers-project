@@ -5,7 +5,7 @@ const PieChart = ({data}) => {
 
     const totalInvested = (list) => {
         const values = list.map((obj) => {
-            if (obj.type == 'BUY') {
+            if (obj.type === 'BUY') {
                 return obj.quantity * obj.price;
             }
             return obj.quantity * obj.price * -1;

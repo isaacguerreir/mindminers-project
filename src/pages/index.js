@@ -1,7 +1,6 @@
 import React from "react"
 import { navigate } from "gatsby"
 import Button from '@material-ui/core/Button';
-import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
 
