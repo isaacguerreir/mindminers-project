@@ -85,11 +85,44 @@ const descountAccLoss = (measuredResult, accumulatedLoss) => {
     return measuredResult;
 }
 
+const totalIR = (list) => {
+    const IRList = list.map((obj) => { return obj.ir })
+    return IRList.reduce((acc, val) => {
+        return acc += val
+    })
+}
+
+const totalProfit = (list) => {
+    const profitList = list.map((obj) => { return obj.profit })
+    return profitList.reduce((acc, val) => {
+        return acc += val
+    })
+}
+
+const totalLoss = (list) => {
+    const lossList = list.map((obj) => { return obj.loss })
+    return lossList.reduce((acc, val) => {
+        return acc += val
+    })
+}
+
+const totalLiquid = (list) => {
+    const profit = totalProfit(list);
+    const loss = totalLoss(list);
+    const ir = totalIR(list);
+
+    return profit - (loss + ir);
+}
+
 export { 
     calculateMedianPrice,
     calculateMedianQuantity,
     calculateAccumulatedLoss,
     descountAccLoss,
     calculateMeasuredResult,
-    calculateIR
+    calculateIR,
+    totalIR,
+    totalProfit,
+    totalLiquid,
+    totalLoss
 };

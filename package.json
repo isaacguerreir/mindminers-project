@@ -20,6 +20,8 @@
     "gatsby-plugin-sharp": "^2.6.4",
     "gatsby-source-filesystem": "^2.3.4",
     "gatsby-transformer-sharp": "^2.5.2",
+    "highcharts": "^8.1.0",
+    "highcharts-react-official": "^3.0.0",
     "material-table": "^1.57.2",
     "mui-datatables": "^2.14.0",
     "prop-types": "^15.7.2",

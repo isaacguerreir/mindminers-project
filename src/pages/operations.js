@@ -498,6 +498,13 @@ export default function OperationsPage() {
             <IconButton onClick={returnToResults}>
                 <ArrowBackIcon />
             </IconButton>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center'
+            }}>
+                <h1>Visão Geral das Operações</h1>
+            </div>
+            
             <Results listStocks={values.listStocks}/>
         </Layout>
     )

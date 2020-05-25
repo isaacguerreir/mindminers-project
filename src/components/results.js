@@ -1,6 +1,9 @@
 import React from "react"
 import { calculateIR } from '../service/calculator';
-import TableResult from '../components/table';
+import TableResult from './table';
+import PieChart from './piechart';
+import ColumnChart from './columnChart';
+import TotalDetails from './totalDetails';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -8,13 +11,36 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const Results = ({ listStocks }) => {
 
-    const IRcalc = listStocks.stocks.map((stock) => {
-        return calculateIR(stock.batch);
-    });
+    const existThisMonth = (el, list) => {
+        return list.indexOf(el) === -1 ? true : false;
+    }
 
-    const stockIds = listStocks.stocks.map((stock)=> {
-        return stock.stockId;
-    })
+    const stockDivideByMonth = (operationList) => {
+        
+        const dateList = operationList.map((operation) => {
+            return operation.date
+        });
+
+        let months = [];
+        dateList.forEach(function(date) {
+            if (existThisMonth(date.getMonth(), months)) {
+                months.push(date.getMonth());
+            }
+        })
+
+        const opByMonth = months.map((month) => {
+            const operationsByMonth = operationList.filter((operation) => {
+                return operation.date.getMonth() === month;
+            })
+            return {
+                month: month,
+                operations: operationsByMonth,
+                result: []
+            }
+        })
+
+        return opByMonth;
+    }
 
     const totalIR = (list) => {
         const IRList = list.map((obj) => { return obj.ir })
@@ -45,10 +71,54 @@ const Results = ({ listStocks }) => {
         return profit - (loss + ir);
     }
 
-    console.log(IRcalc);
+    
+    const returnMonthByNumber = (number) => {
+        var months = {
+            0: 'Janeiro',
+            1: 'Fevereiro',
+            2: 'Março',
+            3: 'Abril',
+            4: 'Maio',
+            5: 'Junho',
+            6: 'Julho',
+            7: 'Agosto',
+            8: 'Setembro',
+            9: 'Outubro',
+            10: 'Novembro',
+            11: 'Dezembro',
+        }
+        return months[number];
+    }
+
+    const IRcalc = listStocks.stocks.map((stock) => {
+        const months = stockDivideByMonth(stock.batch);
+        const result = months.map((obj) => {
+            obj.result = calculateIR(obj.operations);
+            return obj;
+        })
+        return result;
+    });
+
+    const stockIds = listStocks.stocks.map((stock)=> {
+        return stock.stockId;
+    })
+
     
     return (
         <div>
+            <div style={{
+                marginBottom: '2rem'
+            }}>
+                <PieChart
+                    data={listStocks.stocks}
+                />
+            </div>
+            <div style={{
+                fontFamily: 'Rubik',
+
+            }}>
+                Esse é o texto que vai ficar aparecendo entre o chart e os dados detalhados
+            </div>
             {
                 stockIds.map((stockId, index) => {
                     return(
@@ -59,7 +129,9 @@ const Results = ({ listStocks }) => {
                             id="panel1a-header"
                             >
                                 <div style={{
-                                    fontFamily: 'Rubik'
+                                    fontFamily: 'Rubik',
+                                    margin: 0,
+                                    fontWeight: '700'
                                 }}>
                                     {stockId}
                                 </div>
@@ -69,63 +141,52 @@ const Results = ({ listStocks }) => {
                                     display: 'flex',
                                     flexDirection: 'column'
                                 }}>
-                                    <TableResult
-                                        data={listStocks.stocks[index].batch}
-                                        results={IRcalc[index]}
-                                    />
                                     <div style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'flex-end',
-                                        margin: '1.3rem 0',
-                                        paddingRight: '0.3rem',
-                                        fontFamily: 'Karla',
-                                        fontSize: '0.9rem'
+                                        maxWidth: '100vhm'
                                     }}>
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            width: '30%'
-                                        }}>
-                                             <div>Lucro acumulado</div>
-                                             <div>{totalProfit(IRcalc[index]).toFixed(2) }</div>
-                                        </div>
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            width: '30%'
-                                        }}>
-                                             <div>Prejuízo acumulado</div>
-                                             <div>{totalLoss(IRcalc[index]).toFixed(2) }</div>
-                                        </div>
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            width: '30%'
-                                        }}>
-                                             <div>IR acumulado</div>
-                                             <div>{totalIR(IRcalc[index]).toFixed(2) }</div>
-                                        </div>
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            width: '30%'
-                                        }}>
-                                            <div></div><div></div>
-                                        </div>
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            width: '30%',
-                                            marginTop: '0.8rem'
-                                        }}>
-                                             <div>Total Líquido</div>
-                                             <div>{ totalLiquid(IRcalc[index]).toFixed(2) }</div>
-                                        </div>
+                                        <ColumnChart data={IRcalc[index]}/>
                                     </div>
-                                
+                                    {
+                                        IRcalc[index].map((obj) => {
+                                            return(
+                                                <>
+                                                    <ExpansionPanel key={stockId + obj.month}>
+                                                        <ExpansionPanelSummary
+                                                            expandIcon={<ExpandMoreIcon />}
+                                                            aria-controls="panel1a-content"
+                                                            id="panel1a-header"
+                                                        >
+                                                            <div style={{
+                                                                fontFamily: 'Rubik'
+                                                            }}>
+                                                                {returnMonthByNumber(obj.month)}
+                                                            </div>
+                                                        </ExpansionPanelSummary>
+                                                        <ExpansionPanelDetails>
+                                                            <div style={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column'
+                                                            }}>
+                                                            <TableResult
+                                                                data={obj.operations}
+                                                                results={obj.result}
+                                                            />
+                                                            <TotalDetails
+                                                                profit={totalProfit(obj.result).toFixed(2)}
+                                                                loss={totalLoss(obj.result).toFixed(2)}
+                                                                ir={totalIR(obj.result).toFixed(2)}
+                                                                total={totalLiquid(obj.result).toFixed(2)}
+                                                            />
+                                                            </div>
+                                                        </ExpansionPanelDetails>
+                                                    </ExpansionPanel>
+                                                    
+                                                    
+                                                </>
+                                            );
+                                        })
+                                    }
                                 </div>
-                                
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
                     )
