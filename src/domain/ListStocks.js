@@ -2,6 +2,7 @@ import ListOperations from './ListOperations';
 
 class ListStocks {
     constructor() {
+        this._id = this.generateUniqueId();
         this._stocks = [];
     }
 
@@ -43,6 +44,14 @@ class ListStocks {
 
     get stocks() {
         return this._stocks;
+    }
+
+    set stocks(value) {
+        this._stocks = value;
+    }
+
+    generateUniqueId = () => {
+        return '_' + Math.random().toString(36).substr(2, 9);
     }
 }
 

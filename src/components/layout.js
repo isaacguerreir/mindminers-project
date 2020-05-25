@@ -26,32 +26,33 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          position: 'relative',
-          minHeight: '80vh',
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main style={{
-          marginBottom: '3rem'
-        }}>
-          {children}
-        </main>
-        
-        <footer style={{
-          position: 'absolute',
-          bottom: '0',
-          width: '100%',
-          height: '2.5rem'   
-        }}>
+      <div style={styles.box}>
+        <main style={styles.main}>{children}</main>
+        <footer style={styles.footer}>
           © {new Date().getFullYear()}, Isaac Guerreiro
         </footer>
       </div>
     </>
   )
+}
+
+const styles = {
+  box: {
+    position: 'relative',
+    minHeight: '80vh',
+    margin: `0 auto`,
+    maxWidth: 960,
+    padding: `0 1.0875rem 1.45rem`,
+  },
+  main: {
+    marginBottom: '3rem'
+  },
+  footer: {
+    position: 'absolute',
+    bottom: '0',
+    width: '100%',
+    height: '2.5rem'   
+  }
 }
 
 Layout.propTypes = {

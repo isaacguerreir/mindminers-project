@@ -10,7 +10,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const Results = ({ listStocks }) => {
-
+    
     const existThisMonth = (el, list) => {
         return list.indexOf(el) === -1 ? true : false;
     }
@@ -105,28 +105,15 @@ const Results = ({ listStocks }) => {
 
     
     return (
-        <div>
-            <div style={{
-                marginBottom: '2rem'
-            }}>
-                <PieChart
-                    data={listStocks.stocks}
-                />
+        <>
+            <div style={styles.pieChart}>
+                <PieChart data={listStocks.stocks} />
             </div>
-            <div style={{
-                fontFamily: 'Rubik',
-                textAlign: `justify`,
-                textJustify: `inter-word`
-            }}>
+            <div style={styles.description.paragraph}>
                 Clique em cada <b>tipo de Ação</b> adicionada para conferir os detalhes (Lucro Total¹, Prejuízo Total² e Total Líquido³) e o IR calculado,
                 os quais estarão dividos por mês.
             </div>
-            <div style={{
-                fontFamily: 'Rubik',
-                fontSize: '0.6rem',
-                marginBottom: '1rem',
-                paddingLeft: '1rem'
-            }}>
+            <div style={styles.description.tip}>
                 <div>¹ <i>Lucro Total</i> é calculado pelo somatório do valor de todas as operações em que o <i>Resultado Aferido</i> é maior que 0.</div>
                 <div>² <i>Prejuízo Total</i> é calculado pelo somatório do valor de todas as operações em que o <i>Resultado Aferido</i> é menor que 0.</div>
                 <div>³ <i>Total Líquido</i> é calculado pelo <i>Lucro Total</i> menos o <i>Prejuízo Total</i> menos o <i>Imposto de Renda Total</i>.</div>
@@ -136,66 +123,30 @@ const Results = ({ listStocks }) => {
                     return(
                         <ExpansionPanel key={stockId}>
                             <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
                             >
-                                <div style={{
-                                    fontFamily: 'Rubik',
-                                    margin: 0,
-                                    fontWeight: '700'
-                                }}>
-                                    {stockId}
-                                </div>
+                                <div style={styles.expansion.stockId}>{stockId}</div>
                             </ExpansionPanelSummary>
+                            
                             <ExpansionPanelDetails>
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'column'
-                                }}>
-                                    <div style={{
-                                        maxWidth: '100vhm'
-                                    }}>
+                                <div style={styles.expansion.details.box}>
+                                    <div style={styles.expansion.details.columnChart}>
                                         <ColumnChart data={IRcalc[index]}/>
                                     </div>
                                     {
                                         IRcalc[index].map((obj) => {
-                                            return(
-                                                <>
-                                                    <ExpansionPanel key={stockId + obj.month}>
-                                                        <ExpansionPanelSummary
-                                                            expandIcon={<ExpandMoreIcon />}
-                                                            aria-controls="panel1a-content"
-                                                            id="panel1a-header"
-                                                        >
-                                                            <div style={{
-                                                                fontFamily: 'Rubik'
-                                                            }}>
-                                                                {returnMonthByNumber(obj.month)}
-                                                            </div>
-                                                        </ExpansionPanelSummary>
-                                                        <ExpansionPanelDetails>
-                                                            <div style={{
-                                                                display: 'flex',
-                                                                flexDirection: 'column'
-                                                            }}>
-                                                            <TableResult
-                                                                data={obj.operations}
-                                                                results={obj.result}
-                                                            />
-                                                            <TotalDetails
-                                                                profit={totalProfit(obj.result).toFixed(2)}
-                                                                loss={totalLoss(obj.result).toFixed(2)}
-                                                                ir={totalIR(obj.result).toFixed(2)}
-                                                                total={totalLiquid(obj.result).toFixed(2)}
-                                                            />
-                                                            </div>
-                                                        </ExpansionPanelDetails>
-                                                    </ExpansionPanel>
-                                                    
-                                                    
-                                                </>
-                                            );
+                                            return( <Month
+                                                        key={stockId}
+                                                        data={obj}
+                                                        monthName={returnMonthByNumber(obj.month)}
+                                                        profit={totalProfit(obj.result).toFixed(2)}
+                                                        loss={totalLoss(obj.result).toFixed(2)}
+                                                        ir={totalIR(obj.result).toFixed(2)}
+                                                        total={totalLiquid(obj.result).toFixed(2)}
+                                                    />
+                                            )
                                         })
                                     }
                                 </div>
@@ -204,9 +155,90 @@ const Results = ({ listStocks }) => {
                     )
                 })
             }
-        </div>
+        </>
         
         
     )
 }
- export default Results;
+
+function Month(props) {
+    const obj = props.data;
+    const { profit, loss, ir, total, monthName} = props;
+    return(
+        <React.Fragment key={obj.month}>
+            <ExpansionPanel key={obj.month}>
+                <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <div style={styles.expansion.details.month.box}>
+                        {monthName}
+                    </div>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    <div style={styles.expansion.details.month.result}>
+                    <TableResult
+                        data={obj.operations}
+                        results={obj.result}
+                    />
+                    <TotalDetails
+                        profit={profit}
+                        loss={loss}
+                        ir={ir}
+                        total={total}
+                    />
+                    </div>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+        </React.Fragment>
+    )
+}
+
+const styles = {
+    pieChart: {
+        marginBottom: '2rem'
+    },
+    description: {
+        paragraph: {
+            fontFamily: 'Rubik',
+            textAlign: `justify`,
+            textJustify: `inter-word`
+        },
+        tip: {
+            fontFamily: 'Rubik',
+            fontSize: '0.6rem',
+            marginBottom: '1rem',
+            paddingLeft: '1rem'
+        }
+    },
+    expansion: {
+        stockId: {
+            fontFamily: 'Rubik',
+            margin: 0,
+            fontWeight: '700'
+        },
+        details: {
+            box: {
+                display: 'flex',
+                flexDirection: 'column'
+            },
+            columnChart: {
+                maxWidth: '100vhm'
+            },
+            month: {
+                box: {
+                    fontFamily: 'Rubik'
+                },
+                result: {
+                    display: 'flex',
+                    flexDirection: 'column'
+                }
+            }
+        }
+    }
+}
+
+
+
+export default Results;

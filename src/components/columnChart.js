@@ -26,8 +26,7 @@ const ColumnChart = ({data}) => {
         const categories = data.map((obj) => {
             return returnMonthByNumber(obj.month);
         });
-        console.log(categories);
-        return ["Maio"];
+        return [categories];
     }
 
     const createSeries = (data) => {
@@ -65,13 +64,9 @@ const ColumnChart = ({data}) => {
                 data: total
             },
         ]
-        console.log(series);
         return series;
     }
 
-    
-
-    console.log(data);
     const options = {
         chart: {
             type: 'column'

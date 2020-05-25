@@ -1,14 +1,11 @@
-
-
 const calculateIR = (listOperations) => {
     let medianPrice = 0.0;
     let medianQuantity = 0.0;
     let accumulatedLoss = 0.0;
-
     const result = listOperations.map(function(operation) {
-        let price    = operation.price;
-        let quantity = operation.quantity;
-        let tax      = operation.tax;
+        let price    = parseFloat(operation.price);
+        let quantity = parseFloat(operation.quantity);
+        let tax      = parseFloat(operation.tax);
         let type     = operation.type;
 
         if (type === "BUY") {
